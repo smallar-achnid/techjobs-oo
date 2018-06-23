@@ -1,6 +1,6 @@
 package org.launchcode.controllers;
 
-import org.launchcode.models.Job;
+import org.launchcode.models.*;
 import org.launchcode.models.forms.JobForm;
 import org.launchcode.models.data.JobData;
 import org.springframework.stereotype.Controller;
@@ -8,8 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -45,10 +47,45 @@ public class JobController {
         // TODO #6 - Validate the JobForm model, and if valid, create a
         // new Job and add it to the jobData data store. Then
         // redirect to the job detail view for the new Job.
-        if (errors.hasErrors());
-        model.addAttribute(errors);
+        if (errors.hasErrors()) {
+            model.addAttribute(errors);
+            return "new-job";
+        }
+        else {
+            Job addedJob = new Job();
 
-        return "new-job";
+            String name =jobForm.getName();
+            addedJob.setName(name);
+
+            int skillInt = jobForm.getCoreCompetencyId();
+            CoreCompetency skill = jobData.getCoreCompetencies().findById(skillInt);
+            addedJob.setCoreCompetency(skill);
+
+            int employerInt = jobForm.getEmployerId();
+            Employer employer = jobData.getEmployers().findById(employerInt);
+            addedJob.setEmployer(employer);
+
+            int locationInt = jobForm.getLocationId();
+            Location location = jobData.getLocations().findById(locationInt);
+            addedJob.setLocation(location);
+
+            int positionTypeInt = jobForm.getPositionTypeId();
+            PositionType positionType = jobData.getPositionTypes().findById(positionTypeInt);
+            addedJob.setPositionType(positionType);
+
+            //ArrayList<Job> addedJobs = new ArrayList<>();
+            jobData.add(addedJob);
+            model.addAttribute(jobData);
+
+
+
+            String addedJobId = String.valueOf(addedJob.getId());
+
+            //@RequestMapping("?id=" + , method = RequestMethod.GET);
+            return "redirect:" + "?id=" + addedJobId;
+            }
+        }
+
 
     }
-}
+

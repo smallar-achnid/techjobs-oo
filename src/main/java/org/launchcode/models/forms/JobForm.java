@@ -21,11 +21,25 @@ public class JobForm {
 
     @NotNull
     private int employerId;
+    @NotNull
     private int locationId;
+    @NotNull
     private int coreCompetencyId;
+    @NotNull
     private int positionTypeId;
 
-    /*
+    public void setLocationId(int locationId) {
+        this.locationId = locationId;
+    }
+
+    public void setCoreCompetencyId(int coreCompetencyId) {
+        this.coreCompetencyId = coreCompetencyId;
+    }
+
+    public void setPositionTypeId(int positionTypeId) {
+        this.positionTypeId = positionTypeId;
+    }
+/*
         TODO #3 - Included other fields needed to create a job,
         with correct validation attributes and display names.
         Don't forget to add getters and setters
